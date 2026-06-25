@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>ThoughtSpot Object Trusted Auth</masterLabel>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+
+            <property
+                label="Embed Type"
+                name="embedType"
+                type="String"
+                required="true"
+                datasource="Spotter, Search, Answer, Liveboard, Full App"
+                default="Liveboard"
+            />
+            <property
+                name="tsURL"
+                type="String"
+                label="ThoughtSpot URL"
+                required="true"
+                description="The full URL to your ThoughtSpot host"
+                default=""
+            />
+            <property
+                name="orgID"
+                type="String"
+                label="ThoughtSpot Org ID"
+                required="false"
+                description="ThoughtSpot Organization Identifier — leave blank if not using orgs"
+                default=""
+            />
+
+            <!-- Liveboard: set Liveboard ID. Optionally set Tab ID, Viz ID, and display options. -->
+            <property
+                name="liveboardId"
+                type="String"
+                label="[Liveboard] Liveboard ID"
+                required="false"
+                description="GUID of the ThoughtSpot Liveboard to embed"
+                default=""
+            />
+            <property
+                name="tsObjectTabid"
+                type="String"
+                label="[Liveboard] Tab ID"
+                required="false"
+                description="Open the Liveboard on a specific tab — leave blank for the default tab"
+                default=""
+            />
+            <property
+                name="vizId"
+                type="String"
+                label="[Liveboard] Viz ID"
+                required="false"
+                description="Embed a single visualization instead of the full Liveboard — leave blank for the full Liveboard"
+                default=""
+            />
+            <property
+                name="hideLiveboardHeader"
+                type="Boolean"
+                default="false"
+                label="[Liveboard] Hide Header?"
+            />
+            <property
+                name="showLiveboardTitle"
+                type="Boolean"
+                default="false"
+                label="[Liveboard] Show Title?"
+            />
+            <property
+                name="fullHeight"
+                type="Boolean"
+                default="false"
+                label="[Liveboard] Full Height?"
+            />
+
+            <!-- Search: set Data Source ID (Worksheet or Model GUID) -->
+            <property
+                name="searchDataSource"
+                type="String"
+                label="[Search] Data Source ID"
+                required="false"
+                description="GUID of the ThoughtSpot Worksheet or Model to search against"
+                default=""
+            />
+
+            <!-- Answer: set Saved Answer ID -->
+            <property
+                name="answerId"
+                type="String"
+                label="[Answer] Saved Answer ID"
+                required="false"
+                description="GUID of the ThoughtSpot saved Answer to embed"
+                default=""
+            />
+
+            <!-- Spotter -->
+            <property
+                name="worksheetId"
+                type="String"
+                label="[Spotter] Worksheet / Model ID"
+                required="false"
+                description="GUID of the ThoughtSpot Worksheet or Model that Spotter will query against"
+                default=""
+            />
+            <property
+                name="spotterHideSourceSelection"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Hide data source selector?"
+                description="Completely hides the data source picker from the Spotter UI"
+            />
+            <property
+                name="spotterDisableSourceSelection"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Disable data source selector?"
+                description="Grays out the data source picker — keeps it visible but non-interactive"
+            />
+            <property
+                name="spotterHideCardBranding"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Hide ThoughtSpot branding on response cards?"
+                description="Removes the ThoughtSpot logo from AI-generated response cards"
+            />
+            <property
+                name="spotterCardBrandingLabel"
+                type="String"
+                label="[Spotter] Response card label"
+                required="false"
+                description="Custom label shown on AI-generated response cards — leave blank to show no label"
+                default=""
+            />
+            <property
+                name="spotterFileUpload"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Enable file upload?"
+                description="Shows a file upload button in the Spotter chat input"
+            />
+
+            <!-- Full App: choose landing page and hide homepage modules -->
+            <property
+                name="fullAppPageId"
+                type="String"
+                label="[Full App] Landing Page"
+                required="false"
+                datasource="Page.Home, Page.Liveboards, Page.Search, Page.Data, Page.Answers, Page.SpotIQ, Page.Monitor"
+                default="Page.Home"
+                description="The ThoughtSpot page to open when the Full App embed loads"
+            />
+            <property
+                name="hideModuleTrending"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Trending section?"
+                description="Hides the Trending Liveboards and Answers panel from the home page"
+            />
+            <property
+                name="hideModuleWatchlist"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Watchlist section?"
+                description="Hides the KPI Watchlist panel from the home page"
+            />
+            <property
+                name="hideModuleFavorite"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Favorites section?"
+                description="Hides the Favorites panel from the home page"
+            />
+            <property
+                name="hideModuleMyLibrary"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Library section?"
+                description="Hides the Library (Answers and Liveboards list) from the home page"
+            />
+            <property
+                name="hideModuleSearch"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Search module?"
+                description="Hides the search bar module from the home page"
+            />
+            <property
+                name="hideModuleLearning"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Learning section?"
+                description="Hides the Learning videos and resources panel from the home page"
+            />
+
+            <!-- Deprecated: use type-specific ID fields above instead -->
+            <property
+                name="tsObjectGuid"
+                type="String"
+                label="[Deprecated] Object GUID"
+                required="false"
+                description="Deprecated — use the type-specific ID field for your embed type above. Kept for backwards compatibility with existing page configurations."
+                default=""
+            />
+
+            <!-- Filtering (Record Pages only) -->
+            <property
+                name="filterOnRecordId"
+                type="Boolean"
+                default="false"
+                label="Simple filter: filter content based on the current record"
+                description="When enabled, the current record ID is passed to ThoughtSpot as a runtime filter on the column set in 'ThoughtSpot Column Name'."
+            />
+            <property
+                name="tsColumnName"
+                type="String"
+                label="ThoughtSpot Column Name"
+                required="false"
+                description="The ThoughtSpot column name to filter on. Must match a column in your Liveboard or Answer. Used by both simple and advanced filtering."
+                default=""
+            />
+            <property
+                name="sfFieldName"
+                type="String"
+                label="Advanced filter: Salesforce field to use as filter value"
+                required="false"
+                description="Select a field from the current record. Its value will be passed to ThoughtSpot as the filter value for the column set in 'ThoughtSpot Column Name'. Leave blank when using simple record ID filtering."
+                datasource="apex://ObjectFieldPickList"
+            />
+
+            <supportedFormFactors>
+                <supportedFormFactor type="Small" />
+                <supportedFormFactor type="Large" />
+            </supportedFormFactors>
+        </targetConfig>
+
+        <targetConfig targets="lightning__AppPage,lightning__HomePage,lightningCommunity__Default">
+
+            <property
+                label="Embed Type"
+                name="embedType"
+                type="String"
+                datasource="Spotter, Search, Answer, Liveboard, Full App"
+                default="Liveboard"
+            />
+            <property
+                name="tsURL"
+                type="String"
+                label="ThoughtSpot URL"
+                required="true"
+                description="The full URL to your ThoughtSpot host"
+                default=""
+            />
+            <property
+                name="orgID"
+                type="String"
+                label="ThoughtSpot Org ID"
+                required="false"
+                description="ThoughtSpot Organization Identifier — leave blank if not using orgs"
+                default=""
+            />
+
+            <!-- Liveboard: set Liveboard ID. Optionally set Tab ID, Viz ID, and display options. -->
+            <property
+                name="liveboardId"
+                type="String"
+                label="[Liveboard] Liveboard ID"
+                required="false"
+                description="GUID of the ThoughtSpot Liveboard to embed"
+                default=""
+            />
+            <property
+                name="tsObjectTabid"
+                type="String"
+                label="[Liveboard] Tab ID"
+                required="false"
+                description="Open the Liveboard on a specific tab — leave blank for the default tab"
+                default=""
+            />
+            <property
+                name="vizId"
+                type="String"
+                label="[Liveboard] Viz ID"
+                required="false"
+                description="Embed a single visualization instead of the full Liveboard — leave blank for the full Liveboard"
+                default=""
+            />
+            <property
+                name="hideLiveboardHeader"
+                type="Boolean"
+                default="false"
+                label="[Liveboard] Hide Header?"
+            />
+            <property
+                name="showLiveboardTitle"
+                type="Boolean"
+                default="false"
+                label="[Liveboard] Show Title?"
+            />
+            <property
+                name="fullHeight"
+                type="Boolean"
+                default="false"
+                label="[Liveboard] Full Height?"
+            />
+
+            <!-- Search: set Data Source ID (Worksheet or Model GUID) -->
+            <property
+                name="searchDataSource"
+                type="String"
+                label="[Search] Data Source ID"
+                required="false"
+                description="GUID of the ThoughtSpot Worksheet or Model to search against"
+                default=""
+            />
+
+            <!-- Answer: set Saved Answer ID -->
+            <property
+                name="answerId"
+                type="String"
+                label="[Answer] Saved Answer ID"
+                required="false"
+                description="GUID of the ThoughtSpot saved Answer to embed"
+                default=""
+            />
+
+            <!-- Spotter -->
+            <property
+                name="worksheetId"
+                type="String"
+                label="[Spotter] Worksheet / Model ID"
+                required="false"
+                description="GUID of the ThoughtSpot Worksheet or Model that Spotter will query against"
+                default=""
+            />
+            <property
+                name="spotterHideSourceSelection"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Hide data source selector?"
+                description="Completely hides the data source picker from the Spotter UI"
+            />
+            <property
+                name="spotterDisableSourceSelection"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Disable data source selector?"
+                description="Grays out the data source picker — keeps it visible but non-interactive"
+            />
+            <property
+                name="spotterHideCardBranding"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Hide ThoughtSpot branding on response cards?"
+                description="Removes the ThoughtSpot logo from AI-generated response cards"
+            />
+            <property
+                name="spotterCardBrandingLabel"
+                type="String"
+                label="[Spotter] Response card label"
+                required="false"
+                description="Custom label shown on AI-generated response cards — leave blank to show no label"
+                default=""
+            />
+            <property
+                name="spotterFileUpload"
+                type="Boolean"
+                default="false"
+                label="[Spotter] Enable file upload?"
+                description="Shows a file upload button in the Spotter chat input"
+            />
+
+            <!-- Full App: choose landing page and hide homepage modules -->
+            <property
+                name="fullAppPageId"
+                type="String"
+                label="[Full App] Landing Page"
+                required="false"
+                datasource="Page.Home, Page.Liveboards, Page.Search, Page.Data, Page.Answers, Page.SpotIQ, Page.Monitor"
+                default="Page.Home"
+                description="The ThoughtSpot page to open when the Full App embed loads"
+            />
+            <property
+                name="hideModuleTrending"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Trending section?"
+                description="Hides the Trending Liveboards and Answers panel from the home page"
+            />
+            <property
+                name="hideModuleWatchlist"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Watchlist section?"
+                description="Hides the KPI Watchlist panel from the home page"
+            />
+            <property
+                name="hideModuleFavorite"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Favorites section?"
+                description="Hides the Favorites panel from the home page"
+            />
+            <property
+                name="hideModuleMyLibrary"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Library section?"
+                description="Hides the Library (Answers and Liveboards list) from the home page"
+            />
+            <property
+                name="hideModuleSearch"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Search module?"
+                description="Hides the search bar module from the home page"
+            />
+            <property
+                name="hideModuleLearning"
+                type="Boolean"
+                default="false"
+                label="[Full App] Hide Learning section?"
+                description="Hides the Learning videos and resources panel from the home page"
+            />
+
+            <!-- Deprecated: use type-specific ID fields above instead -->
+            <property
+                name="tsObjectGuid"
+                type="String"
+                label="[Deprecated] Object GUID"
+                required="false"
+                description="Deprecated — use the type-specific ID field for your embed type above. Kept for backwards compatibility with existing page configurations."
+                default=""
+            />
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

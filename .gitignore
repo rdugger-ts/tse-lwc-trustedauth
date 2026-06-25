@@ -1,0 +1,9 @@
+# Salesforce CLI tooling cache
+.sfdx/
+.sf/
+
+# OS
+.DS_Store
+
+# Developer notes (not for public repo)
+CLAUDE.md
