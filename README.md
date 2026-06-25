@@ -62,23 +62,30 @@ sf project deploy start --source-dir force-app --target-org <your-org-alias>
 
 ## Post-Deploy Manual Steps
 
-These cannot be deployed via metadata and must be done manually in Salesforce Setup:
+The deploy sets up the full security structure, but two values are instance-specific and must be set manually — they are never stored in code.
 
-### 1. Set the Trusted Auth Secret Key
+### 1. Set the Named Credential URL
+
+Navigate to **Setup → Named Credentials → `tsEmbedNamedCred`** → Edit
+
+Update the **URL** field to your ThoughtSpot cluster's token endpoint:
+```
+https://your-instance.thoughtspot.cloud/api/rest/2.0/auth/token/custom
+```
+
+> **Note:** Every time you redeploy from this repo, the Named Credential URL resets to the placeholder and must be updated again. This is the same pattern as the secret key below — both are instance-specific values that live in Setup, not in code.
+
+### 2. Set the Trusted Auth Secret Key
 
 Navigate to **Setup → Named Credentials → External Credentials → `tsEmbedExtCred`**
 
-Edit the Principal named `tsEmbedExtCred_Principal` and set the **Password** field to your ThoughtSpot trusted auth secret key.
+Edit the Principal named `tsEmbedExtCred_Principal` and set the **Password** field to your ThoughtSpot trusted auth secret key (Developer → Security Settings → Edit → scroll to bottom).
 
-### 2. Assign the Permission Set
+### 3. Assign the Permission Set
 
 Navigate to **Setup → Permission Sets → `TsEmbedPS`** → Manage Assignments → Add Assignments
 
 Assign `TsEmbedPS` to every user who needs to see ThoughtSpot embeds. This grants access to the External Credential (so Apex can read the secret key) and to both Apex classes.
-
-### 3. Add ThoughtSpot to Named Credential Allowed Endpoints (if required)
-
-If your org enforces Remote Site Settings / CSP headers strictly, verify that `tsEmbedNamedCred` points to your ThoughtSpot cluster URL and that the CSP Trusted Site record (`ThoughtSpot`) is deployed with the correct URL.
 
 ---
 
