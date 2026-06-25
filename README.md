@@ -267,6 +267,68 @@ Token validity defaults to **300 seconds** (5 minutes), controlled by the `TsVal
 
 ---
 
+## Ongoing Maintenance
+
+### Updating the SDK
+
+The Visual Embed SDK is bundled as a static resource rather than loaded from a CDN, so it does not update automatically when your ThoughtSpot cluster is upgraded. After a ThoughtSpot version upgrade, check the [SDK changelog](https://github.com/thoughtspot/visual-embed-sdk/blob/main/CHANGELOG.md) and update if new embed features or fixes are needed.
+
+To update:
+
+1. Download the new SDK bundle from npm:
+   ```bash
+   npx jspm install @thoughtspot/visual-embed-sdk
+   ```
+   Or grab it directly from the CDN:
+   ```
+   https://cdn.jsdelivr.net/npm/@thoughtspot/visual-embed-sdk@<version>/dist/tsembed.js
+   ```
+
+2. Replace the contents of `force-app/main/default/staticresources/tsembedSpotter1492.js` with the new file (keeping the filename the same avoids any code changes).
+
+3. Redeploy:
+   ```bash
+   sf project deploy start --source-dir force-app --target-org <alias>
+   ```
+
+### Rotating the Trusted Auth Secret Key
+
+If the ThoughtSpot trusted auth secret key is rotated (recommended after any security incident, or as a periodic hygiene practice):
+
+1. In ThoughtSpot: Developer → Security Settings → Edit → regenerate or copy the new secret key
+2. In Salesforce Setup: Named Credentials → External Credentials → `tsEmbedExtCred` → edit the Principal → update the **Password** field with the new key
+
+No code changes or redeploy needed.
+
+### Migrating to a New ThoughtSpot Cluster
+
+If your ThoughtSpot instance moves to a new URL, update three places and redeploy:
+
+| What | Where in Salesforce Setup |
+|---|---|
+| Token API endpoint | Named Credentials → `tsEmbedNamedCred` → URL |
+| CSP policy | CSP Trusted Sites → `ThoughtSpot` → URL |
+| CORS policy | CORS Allowlist → `https_thoughtspot_cloud` → URL |
+
+After updating, run the deploy command to push the metadata changes to your org. Also update the **ThoughtSpot URL** field on each App Builder page where the component is placed.
+
+### Managing User Access
+
+To grant or revoke access to the ThoughtSpot embed:
+
+- **Grant**: Setup → Permission Sets → `TsEmbedPS` → Manage Assignments → Add user
+- **Revoke**: same path → Remove user
+
+Users without `TsEmbedPS` will get an Apex access error when the component tries to generate a token.
+
+### Tuning Token Validity
+
+The JWT token lifetime defaults to **300 seconds** (5 minutes), set by the `TsValidityTime` custom label. The SDK's `autoLogin: true` silently re-authenticates on expiry, so this value is mainly a security vs. callout-frequency trade-off.
+
+To adjust: Setup → Custom Labels → `TsValidityTime` → Edit → update the value (in seconds). No redeploy needed — Custom Labels are read at runtime.
+
+---
+
 ## Backwards Compatibility
 
 If you have existing Lightning pages using the old **TS Object GUID** field, they will continue to work. The deprecated `[Deprecated] Object GUID` property is kept as a fallback in all embed type configurations. Migrate existing instances by filling in the appropriate type-specific ID field (e.g., `[Liveboard] Liveboard ID`) and clearing the deprecated field when convenient.
