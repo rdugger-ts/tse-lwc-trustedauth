@@ -200,7 +200,7 @@ ThoughtSpot supports **Attribute-Based Access Control (ABAC)** through `variable
 | Applied | Per embed, in the SDK config | At token generation, server-side |
 | Enforced by | ThoughtSpot embed SDK | ThoughtSpot data model (RLS rules) |
 | Users can bypass | Potentially (via SDK API) | No — enforced before data is returned |
-| Requires ThoughtSpot setup | No | Yes — RLS rules must exist on the model |
+| Requires ThoughtSpot setup | No | Yes — RLS rules must exist on the table |
 | Implemented in this component | Yes | Not wired in by default |
 
 **To add ABAC variable support**, make two changes:
@@ -239,7 +239,7 @@ async makePostRequest() {
 }
 ```
 
-See [ThoughtSpot ABAC via RLS Variables docs](https://developers.thoughtspot.com/docs/abac-via-rls-variables) for the full `variable_values` schema and how to define RLS rules on your models.
+See [ThoughtSpot ABAC via RLS Variables docs](https://developers.thoughtspot.com/docs/abac-via-rls-variables) for the full `variable_values` schema and how to define RLS rules on your tables.
 
 ---
 
